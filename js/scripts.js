@@ -41,44 +41,26 @@
         authorInput            = document.getElementById('author'),
         songInput              = document.getElementById('song'),
         addBtn                 = document.getElementById('addBtn'),
-        createBtn              = document.getElementById('createBtn');
+        createBtn              = document.getElementById('createBtn'),
+        arrayBtn               = [authorInput, songInput];
 
         // Слушаем событие и добавляем готовый список при клике
     enterComplitedPlayList.addEventListener('click', function(e) {
 
-        let lists = document.getElementById('lists');
+        createListOfSong(playList);
+    });
 
-        lists.innerHTML = "";
-
-        playList.forEach(elem => {
-            let liTrack = document.createElement('li');
-            liTrack.classList.add('track');
-            liTrack.innerHTML = `
-                <span class="author">${elem.author} - </span>
-                <span class="song">"${elem.song}"</span>
-            `;
-
-            lists.append(liTrack);
+        //Проверяем заполнен ли инпут для заполнения автора и названия песни
+    arrayBtn.forEach(function(elem) {
+        elem.addEventListener("input", function() {
+            if (authorInput.value.length && songInput.value.length) {
+                addBtn.removeAttribute('disabled');
+            } else {
+                addBtn.setAttribute('disabled', true);
+            }
         });
     });
-        //Проверяем заполнен ли инпут для заполнения автора
-    authorInput.addEventListener('input', function() {
 
-            if (authorInput.value.length && songInput.value.length) {
-                addBtn.removeAttribute('disabled');
-            } else {
-                addBtn.setAttribute('disabled', true);
-            }
-    });
-        //Проверяем заполнен ли инпут для заполнения названия песни
-    songInput.addEventListener('input', function() {
-
-            if (authorInput.value.length && songInput.value.length) {
-                addBtn.removeAttribute('disabled');
-            } else {
-                addBtn.setAttribute('disabled', true);
-            }
-    });
         //При нажатии на кнопку "addBtn" добавляем введенные данные в обьект и в новый массив с песнями
     addBtn.addEventListener('click', function(e){
         let obj = {};
@@ -100,11 +82,21 @@
         //Добавляем новый массив с песнями в HTML
     createBtn.addEventListener('click', function(e) {
 
+        createListOfSong(newPlayList);
+
+        createBtn.style.display="none";
+
+        newPlayList = [];
+    });
+
+
+    function createListOfSong (arr) {
+
         let lists = document.getElementById('lists');
         
         lists.innerHTML = "";
        
-        newPlayList.forEach(elem => {
+        arr.forEach(elem => {
             let liTrack = document.createElement('li');
 
             liTrack.classList.add('track');
@@ -114,11 +106,7 @@
             `;
              lists.append(liTrack);
          });
-
-         createBtn.style.display="none";
-
-         newPlayList = [];
-    });
+    }
 
 })();
 
